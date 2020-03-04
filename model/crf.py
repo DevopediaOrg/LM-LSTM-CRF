@@ -349,7 +349,7 @@ class CRFDecode_vb():
         seq_len = scores.size(0)
         bat_size = scores.size(1)
 
-        mask = 1 - mask
+        mask = ~mask
         decode_idx = torch.LongTensor(seq_len-1, bat_size)
 
         # calculate forward score and checkpoint

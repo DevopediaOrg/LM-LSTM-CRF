@@ -187,7 +187,7 @@ class predict_w(predict):
         features = encode_safe(features, self.f_map, self.f_map['<unk>'])
         f_len = max(map(lambda t: len(t) + 1, features))
 
-        masks = torch.ByteTensor(list(map(lambda t: [1] * (len(t) + 1) + [0] * (f_len - len(t) - 1), features)))
+        masks = torch.BoolTensor(list(map(lambda t: [1] * (len(t) + 1) + [0] * (f_len - len(t) - 1), features)))
         word_features = torch.LongTensor(list(map(lambda t: t + [self.pad_word] * (f_len - len(t)), features)))
 
         if self.if_cuda:
@@ -255,7 +255,7 @@ class predict_wc(predict):
         forw_p = torch.LongTensor( list( map( lambda t: list(itertools.accumulate( t + [1] * (word_len - len(t) ) ) ), fea_len) ) )
         back_p = torch.LongTensor( list( map( lambda t: [char_len - 1] + [ char_len - 1 - tup for tup in t[:-1] ], forw_p) ) )
 
-        masks = torch.ByteTensor(list(map(lambda t: [1] * (len(t) + 1) + [0] * (word_len - len(t) - 1), word_features)))
+        masks = torch.BoolTensor(list(map(lambda t: [1] * (len(t) + 1) + [0] * (word_len - len(t) - 1), word_features)))
         word_t = torch.LongTensor(list(map(lambda t: t + [self.pad_word] * (word_len - len(t)), word_features)))
 
         if self.if_cuda:

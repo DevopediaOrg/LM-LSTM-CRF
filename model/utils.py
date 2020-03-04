@@ -568,7 +568,7 @@ def construct_bucket_vb_wc(word_features, forw_features, fea_len, input_labels, 
     bucket_dataset = [CRFDataset_WC(torch.LongTensor(bucket[0]), torch.LongTensor(bucket[1]),
                                     torch.LongTensor(bucket[2]), torch.LongTensor(bucket[3]),
                                     torch.LongTensor(bucket[4]), torch.LongTensor(bucket[5]),
-                                    torch.ByteTensor(bucket[6]), torch.LongTensor(bucket[7])) for bucket in buckets]
+                                    torch.BoolTensor(bucket[6]), torch.LongTensor(bucket[7])) for bucket in buckets]
     return bucket_dataset, forw_corpus, back_corpus
 
 
@@ -588,7 +588,7 @@ def construct_bucket_vb(input_features, input_labels, thresholds, pad_feature, p
             label[cur_len] * label_size + pad_label] + [pad_label * label_size + pad_label] * (
                                        thresholds[idx] - cur_len_1))
         buckets[idx][2].append([1] * cur_len_1 + [0] * (thresholds[idx] - cur_len_1))
-    bucket_dataset = [CRFDataset(torch.LongTensor(bucket[0]), torch.LongTensor(bucket[1]), torch.ByteTensor(bucket[2]))
+    bucket_dataset = [CRFDataset(torch.LongTensor(bucket[0]), torch.LongTensor(bucket[1]), torch.BoolTensor(bucket[2]))
                       for bucket in buckets]
     return bucket_dataset
 
