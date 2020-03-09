@@ -551,6 +551,7 @@ def construct_bucket_vb_wc(word_features, forw_features, fea_len, input_labels, 
         idx = 0
         cur_len_1 = cur_len + 1
         while thresholds[idx] < cur_len_1:
+            # pick the right bucket to minimize padding
             idx += 1
 
         padded_feature = f_f + [pad_char_feature] * (buckets_len[idx] - len(f_f))  # pad feature with <'\n'>, at least one

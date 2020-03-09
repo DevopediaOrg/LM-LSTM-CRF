@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
         # converting format
         train_features, train_labels, f_map, l_map, c_map = utils.generate_corpus_char(lines, if_shrink_c_feature=True, c_thresholds=args.mini_count, if_shrink_w_feature=False)
-        
+
         f_set = {v for v in f_map}
         f_map = utils.shrink_features(f_map, train_features, args.mini_count)
 
@@ -130,6 +130,21 @@ if __name__ == "__main__":
     dataset_loader = [torch.utils.data.DataLoader(tup, args.batch_size, shuffle=True, drop_last=False) for tup in dataset]
     dev_dataset_loader = [torch.utils.data.DataLoader(tup, 50, shuffle=False, drop_last=False) for tup in dev_dataset]
     test_dataset_loader = [torch.utils.data.DataLoader(tup, 50, shuffle=False, drop_last=False) for tup in test_dataset]
+
+    # For debugging only:
+    if True:
+        print("No. of training sentences: features={} labels={}".format(len(train_features), len(train_labels)))
+        print("No. of training tokens: features={} labels={}".format(
+            sum(len(s) for s in train_features), sum(len(s) for s in train_labels)))
+        print("Training dataset counts: dataset={} fw={} bw={}".format(len(dataset), len(forw_corp), len(back_corp)))
+        print("dataset[0][0] = {}".format(dataset[0][0]))
+        print("fw[0:50] = {}".format(forw_corp[0:50]))
+        print("bw[0:50] = {}".format(back_corp[0:50]))
+        print("embedding_tensor.shape={}".format(embedding_tensor.shape))
+        print("in_doc_words={}".format(in_doc_words))
+        print("#f_map={} #l_map={} #c_map={}".format(len(f_map), len(l_map), len(c_map)))
+        print("l_map = {}".format(l_map))
+        print("c_map = {}".format(c_map))
 
     # build model
     print('building model')
