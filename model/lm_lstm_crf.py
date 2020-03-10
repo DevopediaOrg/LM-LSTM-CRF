@@ -45,14 +45,16 @@ class LM_LSTM_CRF(nn.Module):
         self.word_size = vocab_size
         self.if_highway = if_highway
 
+        dr = dropout_ratio if char_rnn_layers > 1 else 0
         self.char_embeds = nn.Embedding(char_size, char_dim)
-        self.forw_char_lstm = nn.LSTM(char_dim, char_hidden_dim, num_layers=char_rnn_layers, bidirectional=False, dropout=dropout_ratio)
-        self.back_char_lstm = nn.LSTM(char_dim, char_hidden_dim, num_layers=char_rnn_layers, bidirectional=False, dropout=dropout_ratio)
+        self.forw_char_lstm = nn.LSTM(char_dim, char_hidden_dim, num_layers=char_rnn_layers, bidirectional=False, dropout=dr)
+        self.back_char_lstm = nn.LSTM(char_dim, char_hidden_dim, num_layers=char_rnn_layers, bidirectional=False, dropout=dr)
         self.char_rnn_layers = char_rnn_layers
 
         self.word_embeds = nn.Embedding(vocab_size, embedding_dim)
 
-        self.word_lstm = nn.LSTM(embedding_dim + char_hidden_dim * 2, word_hidden_dim // 2, num_layers=word_rnn_layers, bidirectional=True, dropout=dropout_ratio)
+        dr = dropout_ratio if word_rnn_layers > 1 else 0
+        self.word_lstm = nn.LSTM(embedding_dim + char_hidden_dim * 2, word_hidden_dim // 2, num_layers=word_rnn_layers, bidirectional=True, dropout=dr)
 
         self.word_rnn_layers = word_rnn_layers
 

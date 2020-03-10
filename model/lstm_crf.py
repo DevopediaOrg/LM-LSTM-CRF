@@ -31,9 +31,10 @@ class LSTM_CRF(nn.Module):
         self.hidden_dim = hidden_dim
         self.vocab_size = vocab_size
 
+        dr = dropout_ratio if rnn_layers > 1 else 0
         self.word_embeds = nn.Embedding(vocab_size, embedding_dim)
         self.lstm = nn.LSTM(embedding_dim, hidden_dim // 2,
-                            num_layers=rnn_layers, bidirectional=True, dropout=dropout_ratio)
+                            num_layers=rnn_layers, bidirectional=True, dropout=dr)
         self.rnn_layers = rnn_layers
     
         self.dropout1 = nn.Dropout(p=dropout_ratio)
